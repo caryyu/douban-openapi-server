@@ -1,4 +1,4 @@
-![](https://travis-ci.org/caryyu/douban-openapi-server.svg?branch=main) | ![](https://img.shields.io/docker/pulls/caryyu/douban-openapi-server.svg) 
+![](https://travis-ci.org/caryyu/douban-openapi-server.svg?branch=main) ![](https://img.shields.io/docker/pulls/caryyu/douban-openapi-server.svg) 
 
 # douban-openapi-server
 
