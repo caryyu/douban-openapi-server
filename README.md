@@ -6,6 +6,12 @@ A selenium-based Douban API server that provides an unofficial method for inform
 
 > Note: Any comments and issues are welcomed!!!
 
+## Docker 
+
+```shell
+docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:latest
+```
+
 ## Installation
 
  - Follow `selenium` document to install Chrome Driver in the runtime environment
