@@ -1,3 +1,5 @@
+![](https://travis-ci.org/caryyu/douban-openapi-server.svg?branch=main) | ![](https://img.shields.io/docker/pulls/caryyu/douban-openapi-server.svg) 
+
 # douban-openapi-server
 
 A selenium-based Douban API server that provides an unofficial method for information querying
