@@ -9,6 +9,9 @@ from selenium.webdriver.remote.webelement import WebElement
 webdriver_options = Options()
 webdriver_options.add_argument("window-size=1024,768")
 webdriver_options.add_argument("--headless")
+webdriver_options.add_argument("--disable-dev-shm-usage")
+webdriver_options.add_argument("--disable-gpu")
+webdriver_options.add_argument("--no-sandbox")
 
 def func_delegate_try_except_driver(func, string:str):
     """
@@ -79,6 +82,8 @@ def func_info_fetch(driver:webdriver.Chrome, href:str) -> Dict:
 
 
 def func_keyword_search(driver:webdriver.Chrome, keyword:str) -> str:
+    # How many rows should be handled
+    limits:int = 3
     driver.get(url="https://www.douban.com")
     # WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, "icp")))
     element_input:WebElement = driver.find_element_by_css_selector(css_selector=".inp input")
@@ -88,7 +93,7 @@ def func_keyword_search(driver:webdriver.Chrome, keyword:str) -> str:
     element_result_list:List = driver.find_elements_by_css_selector(css_selector="div.search-result div:nth-child(3) .result")
     result = filter(filter_func_movie_only, element_result_list)
     result = map(map_func_get_href, result)
-    result = map(lambda x: func_delegate_try_except_driver(func_info_fetch, x), list(result)[:3])
+    result = map(lambda x: func_delegate_try_except_driver(func_info_fetch, x), list(result)[:limits])
 
     return json.dumps(list(result), ensure_ascii=False)
 
