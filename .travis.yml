@@ -1,4 +1,4 @@
-language: python
+language: minimal
 
 services:
   - docker
@@ -8,9 +8,7 @@ before_install:
 
 deploy:
   provider: script
-  script: 
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push caryyu/douban-openapi-server:$TRAVIS_COMMIT
+  script: bash scripts/docker_push
   on:
     branch: master
 
