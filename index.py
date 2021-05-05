@@ -59,7 +59,7 @@ def func_info_fetch(driver:webdriver.Chrome, href:str) -> Dict:
 
     fields_skips = ("^季数:$", "^集数: \\d+$", "^\\d+$")
     fields = ("导演:", "编剧:", "主演:", "类型:", "官方网站:", "制片国家/地区:", "语言:", "上映日期:", "片长:", "又名:", "IMDb链接:")
-    fields_names = ("director", "writer", "actor", "genre", "site", "country", "language", "date", "duration", "subname", "imdb")
+    fields_names = ("director", "writer", "actor", "genre", "site", "country", "language", "screen", "duration", "subname", "imdb")
     lines = info_text.split("\n")
     lines = filter(lambda x: x and not any(re.search(word, x) for word in fields_skips), lines)
     lines = list(lines)
