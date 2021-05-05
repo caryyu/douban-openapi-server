@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 selenium = "==3.141.0"
 flask = "==1.1.2"
+greenlet = "*"
+eventlet = "*"
+gevent = "*"
+gunicorn = "*"
 
 [dev-packages]
 autopep8 = "*"

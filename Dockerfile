@@ -25,8 +25,9 @@ WORKDIR /app
 RUN pip install pipenv
 RUN pipenv install 
 
-ENV FLASK_APP=app.py
-ENV FLASK_ENV=development
-ENV FLASK_DEBUG=0
-ENTRYPOINT ["pipenv", "run", "flask", "run", "--host=0.0.0.0"]
+#ENV FLASK_APP=app.py
+#ENV FLASK_ENV=development
+#ENV FLASK_DEBUG=0
+#ENTRYPOINT ["pipenv", "run", "flask", "run", "--host=0.0.0.0"]
+ENTRYPOINT ["gunicorn", "-w", "3", "-b", "0.0.0.0:5000", "app:app"]
 
