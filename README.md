@@ -30,7 +30,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:latest
 
 ## API Usage
 
-  - A deep search that costs much more time to response, which is around 30 seconds
+- A deep search that costs much more time to response, which is around 30 seconds
 
   ```shell
   ➜ curl -s http://localhost:5000/fullsearch\?q\=Harry%20Potter | jq
