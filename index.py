@@ -51,7 +51,7 @@ def map_func_get_img(element:WebElement) -> str:
 def func_info_fetch(driver:webdriver.Chrome, href:str) -> Dict:
     driver.get(url=href)
     name = driver.find_element_by_css_selector(css_selector="#content h1 span:nth-child(1)").text
-    ranking = driver.find_element_by_css_selector(css_selector="#interest_sectl div.rating_wrap.clearbox div.rating_self.clearfix strong").text
+    rating = driver.find_element_by_css_selector(css_selector="#interest_sectl div.rating_wrap.clearbox div.rating_self.clearfix strong").text
     img = driver.find_element_by_css_selector(css_selector="#mainpic a img").get_attribute(name="src")
     info_text = driver.find_element_by_css_selector(css_selector=".subject #info").text
     year = re.search("\\((\\d+)\\)", driver.find_element_by_css_selector(css_selector="#content h1 span.year").text).group(1)
@@ -67,7 +67,7 @@ def func_info_fetch(driver:webdriver.Chrome, href:str) -> Dict:
     if len(lines) > len(fields):
         raise Exception("Unexpected length: the number of built-in fields aren't greater than expected")
 
-    result:Dict = {"name": name, "ranking": ranking, "img": img, "sid": sid, "year": year}
+    result:Dict = {"name": name, "rating": rating, "img": img, "sid": sid, "year": year}
 
     i = 0
     j = 0
@@ -130,7 +130,7 @@ def service_keyword_partial_search(driver:webdriver.Chrome, keyword:str) -> str:
 
     def func_item_wrap(element: WebElement) -> Dict:
         a:WebElement = element.find_element_by_css_selector(css_selector="div.content div h3 a")
-        ranking = element.find_element_by_css_selector(css_selector="div.content div div span.rating_nums").text
+        rating = element.find_element_by_css_selector(css_selector="div.content div div span.rating_nums").text
         img = element.find_element_by_css_selector(css_selector="div.pic a img").get_attribute("src")
         name = a.text
         sid = re.search(".*sid: (\\d+),.*", a.get_attribute("onclick")).group(1)
@@ -139,7 +139,7 @@ def service_keyword_partial_search(driver:webdriver.Chrome, keyword:str) -> str:
         return {
             "sid": sid,
             "name": name.strip(),
-            "ranking": ranking.strip(),
+            "rating": rating.strip(),
             "img": img.strip(),
             "year": year
         }

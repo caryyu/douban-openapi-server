@@ -37,7 +37,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:latest
   [
     {
       "name": "哈利·波特与魔法石 Harry Potter and the Sorcerer's Stone",
-      "ranking": "9.1",
+      "rating": "9.1",
       "img": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2614949805.webp",
       "sid": "1295038",
       "year": "2001",
@@ -55,7 +55,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:latest
     },
     {
       "name": "哈利·波特与死亡圣器(下) Harry Potter and the Deathly Hallows: Part 2",
-      "ranking": "8.9",
+      "rating": "8.9",
       "img": "https://img2.doubanio.com/view/photo/s_ratio_poster/public/p917846733.webp",
       "sid": "3011235",
       "year": "2011",
@@ -73,7 +73,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:latest
     },
     {
       "name": "哈利·波特与密室 Harry Potter and the Chamber of Secrets",
-      "ranking": "8.7",
+      "rating": "8.7",
       "img": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p1082651990.webp",
       "sid": "1296996",
       "year": "2002",
@@ -100,21 +100,21 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:latest
     {
       "sid": "1295038",
       "name": "哈利·波特与魔法石",
-      "ranking": "9.1",
+      "rating": "9.1",
       "img": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2614949805.webp",
       "year": "2001"
     },
     {
       "sid": "3011235",
       "name": "哈利·波特与死亡圣器(下)",
-      "ranking": "8.9",
+      "rating": "8.9",
       "img": "https://img2.doubanio.com/view/photo/s_ratio_poster/public/p917846733.webp",
       "year": "2011"
     },
     {
       "sid": "1296996",
       "name": "哈利·波特与密室",
-      "ranking": "8.7",
+      "rating": "8.7",
       "img": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p1082651990.webp",
       "year": "2002"
     }
@@ -127,7 +127,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:latest
   ➜ curl -s http://localhost:5000/fetchbysid\?sid\=1295038 | jq
   {
     "name": "哈利·波特与魔法石 Harry Potter and the Sorcerer's Stone",
-    "ranking": "9.1",
+    "rating": "9.1",
     "img": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2614949805.webp",
     "sid": "1295038",
     "year": "2001",
