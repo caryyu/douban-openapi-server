@@ -10,6 +10,7 @@ greenlet = "*"
 eventlet = "*"
 gevent = "*"
 gunicorn = "*"
+flask-caching = "*"
 
 [dev-packages]
 autopep8 = "*"
