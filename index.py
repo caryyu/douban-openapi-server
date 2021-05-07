@@ -5,6 +5,7 @@ from typing import Dict, List
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.common.exceptions import TimeoutException
 
 webdriver_options = Options()
 webdriver_options.add_argument("window-size=1024,768")
@@ -19,6 +20,8 @@ def delegator_try_except_driver(func, string:str):
 
     该委托函数主要把 driver 的 try except 进行集中处理以及异常的通用解决办法
 
+    注意：页面超时打开时间为 10 秒，确保网页过慢影响响应效率
+
     :Args:
      - func - 目标函数，接收的参数数量为 2 个
      - string - 传递给目标函数的第 2 个字符串参数
@@ -29,6 +32,8 @@ def delegator_try_except_driver(func, string:str):
     """
 
     driver = webdriver.Chrome(options=webdriver_options)
+    driver.implicitly_wait(10)
+    driver.set_page_load_timeout(10)
     try:
         return func(driver, string)
     except Exception as ex:
@@ -49,7 +54,10 @@ def map_func_get_img(element:WebElement) -> str:
     return result.get_attribute(name="src")
 
 def func_info_fetch(driver:webdriver.Chrome, href:str) -> Dict:
-    driver.get(url=href)
+    try:
+        driver.get(url=href)
+    except TimeoutException:
+        pass
     name = driver.find_element_by_css_selector(css_selector="#content h1 span:nth-child(1)").text
     rating = driver.find_element_by_css_selector(css_selector="#interest_sectl div.rating_wrap.clearbox div.rating_self.clearfix strong").text
     img = driver.find_element_by_css_selector(css_selector="#mainpic a img").get_attribute(name="src")
@@ -130,11 +138,15 @@ def service_keyword_partial_search(driver:webdriver.Chrome, keyword:str) -> str:
 
     def func_item_wrap(element: WebElement) -> Dict:
         a:WebElement = element.find_element_by_css_selector(css_selector="div.content div h3 a")
-        rating = element.find_element_by_css_selector(css_selector="div.content div div span.rating_nums").text
         img = element.find_element_by_css_selector(css_selector="div.pic a img").get_attribute("src")
         name = a.text
         sid = re.search(".*sid: (\\d+),.*", a.get_attribute("onclick")).group(1)
         year = re.search(".*/ (\\d+)$", element.find_element_by_css_selector(css_selector="div.content div div span.subject-cast").text).group(1)
+        rating = "0"
+        try:
+            element.find_element_by_css_selector(css_selector="div.content div div span.rating_nums").text
+        except:
+            pass
 
         return {
             "sid": sid,
@@ -162,8 +174,8 @@ def service_info_fetch_by_sid(driver:webdriver.Chrome, sid:str) -> str:
     return json.dumps(result, ensure_ascii=False)
 
 # if __name__ == "__main__":
-    # # result = delegator_try_except_driver(service_keyword_full_search, "Harry Potter")
-    # # result = delegator_try_except_driver(service_keyword_partial_search, "昆虫总动员")
-    # result = delegator_try_except_driver(service_info_fetch_by_sid, "1296996")
+    # # result = delegator_try_except_driver(service_keyword_full_search, "Source Code")
+    # # result = delegator_try_except_driver(service_keyword_partial_search, "Source Code")
+    # result = delegator_try_except_driver(service_info_fetch_by_sid, "26275567")
     # print(result)
 
