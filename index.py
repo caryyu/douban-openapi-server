@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 from typing import Dict, List
 
@@ -57,6 +58,7 @@ def func_info_fetch(driver:webdriver.Chrome, href:str) -> Dict:
     try:
         driver.get(url=href)
     except TimeoutException:
+        print(f"the page opening is timeout: {href}")
         pass
     name = driver.find_element_by_css_selector(css_selector="#content h1 span:nth-child(1)").text
     rating = driver.find_element_by_css_selector(css_selector="#interest_sectl div.rating_wrap.clearbox div.rating_self.clearfix strong").text
@@ -64,6 +66,7 @@ def func_info_fetch(driver:webdriver.Chrome, href:str) -> Dict:
     info_text = driver.find_element_by_css_selector(css_selector=".subject #info").text
     year = re.search("\\((\\d+)\\)", driver.find_element_by_css_selector(css_selector="#content h1 span.year").text).group(1)
     sid = re.search(".*/(\\d+)/.*", driver.find_element_by_css_selector(css_selector="#mainpic a").get_attribute(name="href")).group(1)
+    intro = driver.find_element_by_css_selector(css_selector="#link-report span:nth-child(1)").text
 
     fields_skips = ("^季数:$", "^集数: \\d+$", "^\\d+$")
     fields = ("导演:", "编剧:", "主演:", "类型:", "官方网站:", "制片国家/地区:", "语言:", "上映日期:", "片长:", "又名:", "IMDb链接:")
@@ -75,7 +78,7 @@ def func_info_fetch(driver:webdriver.Chrome, href:str) -> Dict:
     if len(lines) > len(fields):
         raise Exception("Unexpected length: the number of built-in fields aren't greater than expected")
 
-    result:Dict = {"name": name, "rating": rating, "img": img, "sid": sid, "year": year}
+    result:Dict = {"name": name, "rating": rating, "img": img, "sid": sid, "year": year, "intro": intro}
 
     i = 0
     j = 0
@@ -173,9 +176,40 @@ def service_info_fetch_by_sid(driver:webdriver.Chrome, sid:str) -> str:
     result = func_info_fetch(driver=driver, href=f"https://movie.douban.com/subject/{sid}/")
     return json.dumps(result, ensure_ascii=False)
 
+def service_info_fetch_celebrities_by_sid(driver:webdriver.Chrome, sid:str) -> str:
+    url = f"https://movie.douban.com/subject/{sid}/celebrities"
+    try:
+        driver.get(url=url)
+    except TimeoutException:
+        print(f"the page opening is timeout: {url}")
+        pass
+    elements = driver.find_elements_by_css_selector(css_selector="li.celebrity")
+
+    def func_element_wrap(element) -> dict:
+        cid = re.search(".*/(\\d+)/$", element.find_element_by_css_selector("a").get_attribute("href")).group(1)
+        img = re.search(".*url\\(\"(.*)\"\\).*", element.find_element_by_css_selector("div.avatar").get_attribute("style")).group(1)
+        name = element.find_element_by_css_selector("span.name").text.split(" ")[0]
+        role = ""
+        try:
+            role = element.find_element_by_css_selector("span.role").text.split(" ")[0]
+        except:
+            pass
+
+        return {
+            "id": cid,
+            "img": img,
+            "name": name,
+            "role": role
+        }
+
+    result = map(func_element_wrap, elements)
+    result = filter(lambda x: x["role"] in ["导演","配音","演员"], list(result))
+    return json.dumps(list(result), ensure_ascii=False)
+
 # if __name__ == "__main__":
     # # result = delegator_try_except_driver(service_keyword_full_search, "Source Code")
     # # result = delegator_try_except_driver(service_keyword_partial_search, "Source Code")
     # result = delegator_try_except_driver(service_info_fetch_by_sid, "26275567")
+    # result = delegator_try_except_driver(service_info_fetch_celebrities_by_sid, "4202982")
     # print(result)
 

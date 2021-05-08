@@ -18,7 +18,7 @@ def api_full_search():
     headers = {'content-type': 'application/json'}
     keyword = request.args.get("q")
     app.logger.info('the parameter is given: %s', keyword)
-    result = "[]"
+    result = ""
     try:
         result = delegator_try_except_driver(service_keyword_full_search, str(keyword))
     except Exception as ex:
@@ -33,7 +33,7 @@ def api_partial_search():
     headers = {'content-type': 'application/json'}
     keyword = request.args.get("q")
     app.logger.info('the parameter is given: %s', keyword)
-    result = "[]"
+    result = ""
     try:
         result = delegator_try_except_driver(service_keyword_partial_search, str(keyword))
     except Exception as ex:
@@ -48,9 +48,24 @@ def api_fetch_by_sid():
     headers = {'content-type': 'application/json'}
     sid = request.args.get("sid")
     app.logger.info('the parameter is given: %s', sid)
-    result = "{}"
+    result = ""
     try:
         result = delegator_try_except_driver(service_info_fetch_by_sid, str(sid))
+    except Exception as ex:
+        print(ex)
+    if result:
+        return result, 200, headers
+    return f'Results Not Found: {sid}', 404, headers
+
+@app.route('/fetchceleritiesbysid', methods=['GET'])
+@cache.cached(timeout=30, query_string=True)
+def api_fetch_celerities_by_sid():
+    headers = {'content-type': 'application/json'}
+    sid = request.args.get("sid")
+    app.logger.info('the parameter is given: %s', sid)
+    result = ""
+    try:
+        result = delegator_try_except_driver(service_info_fetch_celebrities_by_sid, str(sid))
     except Exception as ex:
         print(ex)
     if result:
