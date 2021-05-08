@@ -106,9 +106,14 @@ def service_keyword_full_search(driver:webdriver.Chrome, keyword:str) -> str:
     :Returns:
      返回 List[Dict] 类型的 JSON 字符串
     """
+
     # How many rows should be handled
     limits:int = 3
-    driver.get(url="https://www.douban.com")
+    try:
+        driver.get(url="https://www.douban.com")
+    except TimeoutException:
+        print(f"the page opening is timeout: https://www.douban.com")
+        pass
     # WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, "icp")))
     element_input:WebElement = driver.find_element_by_css_selector(css_selector=".inp input")
     element_input.send_keys(keyword)
@@ -135,7 +140,11 @@ def service_keyword_partial_search(driver:webdriver.Chrome, keyword:str) -> str:
     """
     # How many rows should be handled
     limits:int = 3
-    driver.get(url=f"https://www.douban.com/search?q={keyword}")
+    try:
+        driver.get(url=f"https://www.douban.com/search?q={keyword}")
+    except TimeoutException:
+        print(f"the page opening is timeout: https://www.douban.com/search?q={keyword}")
+        pass
     element_result_list:List = driver.find_elements_by_css_selector(css_selector="div.search-result div:nth-child(3) .result")
     result = filter(filter_func_movie_only, element_result_list)
 
