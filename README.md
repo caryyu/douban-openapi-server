@@ -10,6 +10,7 @@ A selenium-based Douban API server that provides an unofficial method for inform
 
 ```shell
 docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:latest
+docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
 ```
 
 ## Install
