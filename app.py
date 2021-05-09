@@ -8,12 +8,12 @@ cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 
 @app.route('/search', methods=['GET'])
-@cache.cached(timeout=30, query_string=True)
+# @cache.cached(timeout=30, query_string=True)
 def api_search():
     return api_full_search()
 
 @app.route('/fullsearch', methods=['GET'])
-@cache.cached(timeout=30, query_string=True)
+# @cache.cached(timeout=30, query_string=True)
 def api_full_search():
     headers = {'content-type': 'application/json'}
     keyword = request.args.get("q")
@@ -28,7 +28,7 @@ def api_full_search():
     return f'Results Not Found: {keyword}', 404, headers
 
 @app.route('/partialsearch', methods=['GET'])
-@cache.cached(timeout=30, query_string=True)
+# @cache.cached(timeout=30, query_string=True)
 def api_partial_search():
     headers = {'content-type': 'application/json'}
     keyword = request.args.get("q")
@@ -43,7 +43,7 @@ def api_partial_search():
     return f'Results Not Found: {keyword}', 404, headers
 
 @app.route('/fetchbysid', methods=['GET'])
-@cache.cached(timeout=30, query_string=True)
+# @cache.cached(timeout=30, query_string=True)
 def api_fetch_by_sid():
     headers = {'content-type': 'application/json'}
     sid = request.args.get("sid")
@@ -58,7 +58,7 @@ def api_fetch_by_sid():
     return f'Results Not Found: {sid}', 404, headers
 
 @app.route('/fetchceleritiesbysid', methods=['GET'])
-@cache.cached(timeout=30, query_string=True)
+# @cache.cached(timeout=30, query_string=True)
 def api_fetch_celerities_by_sid():
     headers = {'content-type': 'application/json'}
     sid = request.args.get("sid")
