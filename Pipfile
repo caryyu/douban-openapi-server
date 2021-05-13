@@ -11,6 +11,8 @@ eventlet = "*"
 gevent = "*"
 gunicorn = "*"
 flask-caching = "*"
+requests = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 autopep8 = "*"

@@ -1,8 +1,12 @@
+import json
+
 from flask import Flask
 from flask import request
-from index import *
 from flask_caching import Cache
 
+from provider.httprequest_provider import HttpRequestProvider
+
+provider = HttpRequestProvider()
 app = Flask(__name__)
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app, config={'CACHE_TYPE': 'simple'})
@@ -20,7 +24,8 @@ def api_full_search():
     app.logger.info('the parameter is given: %s', keyword)
     result = ""
     try:
-        result = delegator_try_except_driver(service_keyword_full_search, str(keyword))
+        obj = provider.search_full_list(str(keyword))
+        result = json.dumps(obj, ensure_ascii=False)
     except Exception as ex:
         print(ex)
     if result:
@@ -35,7 +40,8 @@ def api_partial_search():
     app.logger.info('the parameter is given: %s', keyword)
     result = ""
     try:
-        result = delegator_try_except_driver(service_keyword_partial_search, str(keyword))
+        obj = provider.search_partial_list(str(keyword))
+        result = json.dumps(obj, ensure_ascii=False)
     except Exception as ex:
         print(ex)
     if result:
@@ -50,7 +56,8 @@ def api_fetch_by_sid():
     app.logger.info('the parameter is given: %s', sid)
     result = ""
     try:
-        result = delegator_try_except_driver(service_info_fetch_by_sid, str(sid))
+        obj = provider.fetch_detail_info(str(sid))
+        result = json.dumps(obj, ensure_ascii=False)
     except Exception as ex:
         print(ex)
     if result:
@@ -65,7 +72,8 @@ def api_fetch_celerities_by_sid():
     app.logger.info('the parameter is given: %s', sid)
     result = ""
     try:
-        result = delegator_try_except_driver(service_info_fetch_celebrities_by_sid, str(sid))
+        obj = provider.fetch_celebrities(str(sid))
+        result = json.dumps(obj, ensure_ascii=False)
     except Exception as ex:
         print(ex)
     if result:

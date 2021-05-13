@@ -2,7 +2,11 @@
 
 # douban-openapi-server
 
-A selenium-based Douban API server that provides an unofficial method for information querying
+A Douban API server that provides an unofficial method for information gathering, currently, supporting several providers below:
+
+- SeleniumProvider - which will open a headless Chrome to simulate the user interaction (Optional)
+- HttpRequestProvider - which has leveraged `Requests & BeautifulSoup` for information gathering with no any browser interaction (By default)
+- P2PCacheProvider - `ToDo` (Scrapy/SQLite/IPFS/BitTorrent/etc) - ?
 
 > Note: Any comments and issues are welcomed!!!
 
@@ -14,8 +18,6 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
 ```
 
 ## Install
-
- - Follow `selenium` document to install Chrome Driver in the runtime environment
 
  - Make sure you have `python3` and `pipenv` installed in advance,
 
@@ -29,9 +31,11 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
   flask run
   ```
 
+  > Note: There are two providers for you to choose, by default, `HttpRequestProvider` will take place, which will be faster for information fetching, for `Selenium`, You have to follow their official instruction in advance
+
 ## API Usage
 
-- A deep search that costs much more time to response, which is around 30 seconds
+- A deep search that costs much more time to response due to the detailed information
 
   ```shell
   ➜ curl -s http://localhost:5000/fullsearch\?q\=Harry%20Potter | jq
@@ -42,6 +46,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
       "img": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2614949805.webp",
       "sid": "1295038",
       "year": "2001",
+      "intro": "xxxx",
       "director": "克里斯·哥伦布",
       "writer": "史蒂夫·克洛夫斯 / J·K·罗琳",
       "actor": "丹尼尔·雷德克里夫 / 艾玛·沃森 / 鲁伯特·格林特 / 艾伦·瑞克曼 / 玛吉·史密斯 / 更多...",
@@ -60,6 +65,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
       "img": "https://img2.doubanio.com/view/photo/s_ratio_poster/public/p917846733.webp",
       "sid": "3011235",
       "year": "2011",
+      "intro": "xxxx",
       "director": "大卫·叶茨",
       "writer": "史蒂夫·克洛夫斯 / J·K·罗琳",
       "actor": "丹尼尔·雷德克里夫 / 艾玛·沃森 / 鲁伯特·格林特 / 海伦娜·伯翰·卡特 / 拉尔夫·费因斯 / 更多...",
@@ -78,6 +84,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
       "img": "https://img3.doubanio.com/view/photo/s_ratio_poster/public/p1082651990.webp",
       "sid": "1296996",
       "year": "2002",
+      "intro": "xxxx",
       "director": "克里斯·哥伦布",
       "writer": "史蒂夫·克洛夫斯 / J·K·罗琳",
       "actor": "丹尼尔·雷德克里夫 / 艾玛·沃森 / 鲁伯特·格林特 / 汤姆·费尔顿 / 理查德·格雷弗斯 / 更多...",
@@ -93,7 +100,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
   ]
   ```
 
-- A shallow search the time cost is under 10 seconds
+- A shallow search without the detailed information
 
   ```shell
   ➜ curl -s http://localhost:5000/partialsearch\?q\=Harry%20Potter | jq
@@ -122,7 +129,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
   ]
   ```
 
-- Retrieve a single object and response within a very less time(probably 1 - 3 seconds)
+- Retrieve a single object and response within a very less time
 
   ```shell
   ➜ curl -s http://localhost:5000/fetchbysid\?sid\=1295038 | jq
@@ -132,6 +139,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
     "img": "https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2614949805.webp",
     "sid": "1295038",
     "year": "2001",
+    "intro": "xxxx",
     "director": "克里斯·哥伦布",
     "writer": "史蒂夫·克洛夫斯 / J·K·罗琳",
     "actor": "丹尼尔·雷德克里夫 / 艾玛·沃森 / 鲁伯特·格林特 / 艾伦·瑞克曼 / 玛吉·史密斯 / 更多...",
