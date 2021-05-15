@@ -14,8 +14,10 @@ A Douban API server that provides an unofficial method for information gathering
 
 ```shell
 docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:latest
-docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
+docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:<commit>
 ```
+
+> Note: the `commit` can be found from git history of main branch
 
 ## Install
 
@@ -57,7 +59,15 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
       "screen": "2002-01-26(中国大陆) / 2020-08-14(中国大陆重映) / 2001-11-04(英国首映) / 2001-11-16(美国)",
       "duration": "152分钟 / 159分钟(加长版)",
       "subname": "哈利波特1：神秘的魔法石(港/台) / 哈1 / Harry Potter and the Philosopher's Stone",
-      "imdb": "tt0241527"
+      "imdb": "tt0241527",
+      "celebrities": [
+        {
+          "id": "1018208",
+          "img": "https://img2.doubanio.com/view/celebrity/s_ratio_celebrity/public/p57793.jpg",
+          "name": "蒂莫西·范·帕腾",
+          "role": "导演"
+        }
+      ]
     },
     {
       "name": "哈利·波特与死亡圣器(下) Harry Potter and the Deathly Hallows: Part 2",
@@ -76,7 +86,15 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
       "screen": "2011-08-04(中国大陆) / 2011-07-15(美国)",
       "duration": "130分钟",
       "subname": "哈利波特7：死神的圣物2(港/台) / 哈利·波特与死圣(下) / 哈7(下) / 哈利·波特大结局",
-      "imdb": "tt1201607"
+      "imdb": "tt1201607",
+      "celebrities": [
+        {
+          "id": "1018208",
+          "img": "https://img2.doubanio.com/view/celebrity/s_ratio_celebrity/public/p57793.jpg",
+          "name": "蒂莫西·范·帕腾",
+          "role": "导演"
+        }
+      ]
     },
     {
       "name": "哈利·波特与密室 Harry Potter and the Chamber of Secrets",
@@ -95,7 +113,15 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
       "screen": "2003-01-24(中国大陆) / 2002-11-15(英国/美国)",
       "duration": "161分钟 / 174分钟(加长版)",
       "subname": "哈利波特2：消失的密室(港/台) / 哈2",
-      "imdb": "tt0295297"
+      "imdb": "tt0295297",
+      "celebrities": [
+        {
+          "id": "1018208",
+          "img": "https://img2.doubanio.com/view/celebrity/s_ratio_celebrity/public/p57793.jpg",
+          "name": "蒂莫西·范·帕腾",
+          "role": "导演"
+        }
+      ]
     }
   ]
   ```
@@ -150,7 +176,15 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:65ed138
     "screen": "2002-01-26(中国大陆) / 2020-08-14(中国大陆重映) / 2001-11-04(英国首映) / 2001-11-16(美国)",
     "duration": "152分钟 / 159分钟(加长版)",
     "subname": "哈利波特1：神秘的魔法石(港/台) / 哈1 / Harry Potter and the Philosopher's Stone",
-    "imdb": "tt0241527"
+    "imdb": "tt0241527",
+    "celebrities": [
+      {
+        "id": "1018208",
+        "img": "https://img2.doubanio.com/view/celebrity/s_ratio_celebrity/public/p57793.jpg",
+        "name": "蒂莫西·范·帕腾",
+        "role": "导演"
+      }
+    ]
   }
   ```
 

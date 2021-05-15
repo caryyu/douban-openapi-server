@@ -1,6 +1,7 @@
 import json
 import re
 from typing import Dict, List
+
 from bs4 import BeautifulSoup
 import requests
 
@@ -68,28 +69,50 @@ class HttpRequestProvider(object):
         sid = re.search(".*/(\\d+)/.*", soup.select_one("#mainpic a")["href"]).group(1)
         intro = "".join(soup.select_one("#link-report span:nth-child(1)").stripped_strings)
 
-        fields_skips = ("^季数:$", "^集数: \\d+$", "^\\d+$", "^官方小站:$")
-        fields = ("导演:", "编剧:", "主演:", "类型:", "官方网站:", "制片国家/地区:", "语言:", "上映日期:", "片长:", "又名:", "IMDb链接:")
-        fields_names = ("director", "writer", "actor", "genre", "site", "country", "language", "screen", "duration", "subname", "imdb")
         lines = info_text.split("\n")
-        lines = filter(lambda x: x and not any(re.search(word, x) for word in fields_skips), lines)
-        lines = list(lines)
+        lines = map(lambda x: x.split(":", 1), lines)
+        lines = filter(lambda x: len(x) > 1, lines)
 
-        if len(lines) > len(fields):
-            raise Exception("Unexpected length: the number of built-in fields aren't greater than expected")
+        fields = ("导演", "编剧", "主演", "类型", "官方网站", "制片国家/地区", "语言", "上映日期", "片长", "又名", "IMDb链接", "IMDb", "单集片长", "首播")
+        fields_names = ("director", "writer", "actor", "genre", "site", "country", "language", "screen", "duration", "subname", "imdb", "imdb", "duration", "screen")
+        result:Dict[str, object] = {"name": name, "rating": rating, "img": img, "sid": sid, "year": year, "intro": intro}
 
-        result:Dict = {"name": name, "rating": rating, "img": img, "sid": sid, "year": year, "intro": intro}
+        for item in iter(lines):
+            field = item[0]
+            i = 0
+            has = False
 
-        i = 0
-        j = 0
-        while i < len(fields):
-            if fields[i] in lines[j]:
-                value = lines[j].replace(fields[i], "")
-                result[fields_names[i]] = value.strip()
-                j = j + 1
-            else:
-                result[fields_names[i]] = ""
-            i = i + 1
+            while i < len(fields):
+                if fields[i] == field:
+                    has = True
+                    break
+                i+=1
+
+            if has:
+               result[fields_names[i]] = item[1].strip() 
+            
+        celebrities = soup.select("ul.celebrities-list li.celebrity")
+
+        def func_element_wrap(element):
+            cid = re.search(".*/(\\d+)/$", element.select_one("a")["href"]).group(1)
+            img = re.search(".*url\\((.*)\\).*", element.select_one("div.avatar")["style"]).group(1)
+            name = element.select_one("span.name").string.split(" ")[0]
+            role = ""
+            try:
+                role = element.select_one("span.role").string.split(" ")[0]
+            except:
+                pass
+
+            return {
+                "id": cid,
+                "img": img,
+                "name": name,
+                "role": role
+            }
+
+        celebrities = map(func_element_wrap, celebrities)
+        celebrities = filter(lambda x: x["role"] in ["导演","配音","演员"], list(celebrities))
+        result["celebrities"] = list(celebrities)
 
         return result
 
@@ -126,10 +149,10 @@ class HttpRequestProvider(object):
 
 # if __name__ == "__main__":
     # p = HttpRequestProvider()
-    # # result = p.search_full_list("Harry Potter")
-    # # result = trans.search_partial_list("Harry Potter")
-    # # result = p.fetch_detail_info("1295038")
-    # result = p.fetch_celebrities("1295038")
+    # # # result = p.search_full_list("Harry Potter")
+    # # # result = trans.search_partial_list("Harry Potter")
+    # result = p.fetch_detail_info("3016187")
+    # # result = p.fetch_celebrities("1295038")
     # result = json.dumps(result, ensure_ascii=False)
     # print(result)
 
