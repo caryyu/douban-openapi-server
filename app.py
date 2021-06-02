@@ -3,13 +3,21 @@ import json
 from flask import Flask
 from flask import request
 from flask_caching import Cache
+from flask_restful import Api
 
 from provider.httprequest_provider import HttpRequestProvider
+from resource.movies import Movies
 
 provider = HttpRequestProvider()
 app = Flask(__name__)
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+
+api = Api(app)
+api.add_resource(Movies, '/movies', resource_class_kwargs={
+    'provider': provider,
+    'logger': app.logger
+})
 
 @app.route('/search', methods=['GET'])
 # @cache.cached(timeout=30, query_string=True)
