@@ -1,3 +1,0 @@
-class GeneralAPIs(object):
-
-
