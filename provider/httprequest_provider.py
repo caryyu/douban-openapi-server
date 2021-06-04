@@ -117,6 +117,7 @@ class HttpRequestProvider(object):
         return result
 
     def fetch_celebrities(self, sid:str) -> List:
+        limits=8
         r = requests.get(f"https://movie.douban.com/subject/{sid}/celebrities", headers=self.headers)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
@@ -139,9 +140,46 @@ class HttpRequestProvider(object):
                 "role": role
             }
 
+        def load_detail(x) -> dict:
+            detail = self.fetch_celebrity_detail(x["id"])
+            return {**x, **detail}
+
         result = map(func_element_wrap, elements)
         result = filter(lambda x: x["role"] in ["导演","配音","演员"], list(result))
+        result = map(load_detail, list(result)[:limits])
         return list(result)
+
+    def fetch_celebrity_detail(self, cid) -> dict:
+        r = requests.get(f"https://movie.douban.com/celebrity/{cid}/", headers=self.headers)
+        r.raise_for_status()
+        soup = BeautifulSoup(r.text, "html.parser")
+        info_text = soup.select_one("#headline div.info ul").get_text()
+        intro = "".join(soup.select_one("#intro div.bd").stripped_strings)
+
+        lines = info_text.split("\n\n")
+        lines = map(lambda x: "".join(x.split("\n")), lines)
+        lines = map(lambda x: x.split(":", 1), lines)
+        lines = filter(lambda x: len(x) > 1, lines)
+
+        fields = ("性别", "星座", "出生日期", "出生地", "职业", "更多外文名", "家庭成员", "imdb编号", "官方网站")
+        fields_names = ("gender", "constellation", "birthdate", "birthplace", "role", "nickname", "friends", "imdb", "site")
+        result:Dict[str, object] = {"intro": intro}
+
+        for item in iter(lines):
+            field = item[0]
+            i = 0
+            has = False
+
+            while i < len(fields):
+                if fields[i] == field:
+                    has = True
+                    break
+                i+=1
+
+            if has:
+               result[fields_names[i]] = item[1].strip() 
+
+        return result
 
     def _filter_func_movie_only(self, element) -> bool:
         category = element.select_one("div.content div h3 span")
@@ -149,6 +187,8 @@ class HttpRequestProvider(object):
 
 # if __name__ == "__main__":
     # p = HttpRequestProvider()
+    # r = p.fetch_celebrity_detail("1032915")
+    # print(r)
     # # # result = p.search_full_list("Harry Potter")
     # # # result = trans.search_partial_list("Harry Potter")
     # result = p.fetch_detail_info("3016187")
