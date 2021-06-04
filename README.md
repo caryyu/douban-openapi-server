@@ -40,7 +40,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:<commit>
 - A deep search that costs much more time to response due to the detailed information
 
   ```shell
-  ➜ curl -s http://localhost:5000/fullsearch\?q\=Harry%20Potter | jq
+  ➜ curl -s http://localhost:5000/movies\?q\=Harry%20Potter\&type\=full | jq
   [
     {
       "name": "哈利·波特与魔法石 Harry Potter and the Sorcerer's Stone",
@@ -129,7 +129,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:<commit>
 - A shallow search without the detailed information
 
   ```shell
-  ➜ curl -s http://localhost:5000/partialsearch\?q\=Harry%20Potter | jq
+  ➜ curl -s http://localhost:5000/movies\?q\=Harry%20Potter\&type\=partial | jq
   [
     {
       "sid": "1295038",
@@ -158,7 +158,7 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:<commit>
 - Retrieve a single object and response within a very less time
 
   ```shell
-  ➜ curl -s http://localhost:5000/fetchbysid\?sid\=1295038 | jq
+  ➜ curl -s http://localhost:5000/movies/1295038 | jq
   {
     "name": "哈利·波特与魔法石 Harry Potter and the Sorcerer's Stone",
     "rating": "9.1",
@@ -186,6 +186,26 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:<commit>
       }
     ]
   }
+  ```
+
+- Given a movie id to fetch the celebrity list
+
+  ```
+  ➜ curl -s http://localhost:5000/movies/1295038/celebrities | jq
+  [
+    {
+      "id": "1049716",
+      "img": "https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p10680.jpg",
+      "name": "克里斯·哥伦布",
+      "role": "导演"
+    },
+    {
+      "id": "1003484",
+      "img": "https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p30800.jpg",
+      "name": "丹尼尔·雷德克里夫",
+      "role": "演员"
+    }
+  ]
   ```
 
 # Disclaimer
