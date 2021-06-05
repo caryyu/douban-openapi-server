@@ -1,4 +1,5 @@
 import json
+from resource.celebrity_resource import Celebrity
 from resource.movie_resource import Movie, MovieCelebrityList, MovieList
 
 from flask import Flask
@@ -22,6 +23,7 @@ options = {
 api.add_resource(MovieList, '/movies', resource_class_kwargs=options)
 api.add_resource(Movie, '/movies/<sid>', resource_class_kwargs=options)
 api.add_resource(MovieCelebrityList, '/movies/<sid>/celebrities', resource_class_kwargs=options)
+api.add_resource(Celebrity, '/celebrities/<cid>', resource_class_kwargs=options)
 
 @app.route('/search', methods=['GET'])
 # @cache.cached(timeout=30, query_string=True)
