@@ -197,6 +197,20 @@ docker run --rm -d -p 5000:5000 caryyu/douban-openapi-server:<commit>
       "id": "1027347",
       "img": "https://img9.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1477093490.04.jpg",
       "name": "伊恩·哈特",
+      "role": "演员"
+    }
+  ]
+  ```
+
+- Given a celebrity id to fetch the celebrity detail
+
+  ```
+  ➜ curl -s http://localhost:5000/celebrities/1027347 | jq
+  [
+    {
+      "id": "1027347",
+      "img": "https://img9.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1477093490.04.jpg",
+      "name": "伊恩·哈特",
       "role": "演员",
       "intro": "伊恩·哈特（Ian Hart），1964年10月8日出生于英国利物浦。英国男演员。曾在哈利·波特的第一部《哈利·波特与魔法石》中扮演了奇洛教授，被中国观众所熟知。作为英国戏剧界一位知名的演员，他还曾经成功地扮演过约翰·列侬。",
       "gender": "男",
