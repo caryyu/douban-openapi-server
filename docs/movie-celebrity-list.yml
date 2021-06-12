@@ -1,0 +1,16 @@
+Query a movie celebrity list by a movie id
+---
+tags:
+  - Movie
+parameters:
+  - name: sid
+    in: path
+    type: string
+    required: true
+responses:
+  200:
+    description: A list of celebrities
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/Celebrity'

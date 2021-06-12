@@ -1,0 +1,23 @@
+Query a movie list by a keyword
+---
+tags:
+  - Movie
+parameters:
+  - name: type
+    in: query
+    type: string
+    enum: ['full', 'partial']
+    required: false
+    default: partial
+  - name: q
+    in: query
+    type: string
+    required: true
+    default: 'Harry Potter'
+responses:
+  200:
+    description: A list of movies
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/Movie'
