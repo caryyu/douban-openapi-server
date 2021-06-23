@@ -1,4 +1,6 @@
 import json
+
+from flasgger import Swagger
 from resource.celebrity_resource import Celebrity
 from resource.movie_resource import Movie, MovieCelebrityList, MovieList
 
@@ -24,6 +26,24 @@ api.add_resource(MovieList, '/movies', resource_class_kwargs=options)
 api.add_resource(Movie, '/movies/<sid>', resource_class_kwargs=options)
 api.add_resource(MovieCelebrityList, '/movies/<sid>/celebrities', resource_class_kwargs=options)
 api.add_resource(Celebrity, '/celebrities/<cid>', resource_class_kwargs=options)
+
+swagger_config = {
+    "headers": [
+    ],
+    "specs": [
+        {
+            "endpoint": 'apispec',
+            "route": '/apispec.json',
+            "rule_filter": lambda rule: True,  # all in
+            "model_filter": lambda tag: True,  # all in
+        }
+    ],
+    "static_url_path": "/flasgger_static",
+    # "static_folder": "static",  # must be set by user
+    "swagger_ui": True,
+    "specs_route": "/"
+}
+swagger = Swagger(app, config=swagger_config, template_file='docs/default.yml')
 
 @app.route('/search', methods=['GET'])
 # @cache.cached(timeout=30, query_string=True)

@@ -1,0 +1,14 @@
+Query a movie by its id
+---
+tags:
+  - Movie
+parameters:
+  - name: sid
+    in: path
+    type: string
+    required: true
+responses:
+  200:
+    description: A movie object
+    schema:
+      $ref: '#/definitions/Movie'

@@ -1,6 +1,8 @@
 from resource.base_resource import BaseResource
+from flasgger import swag_from
 
 class Celebrity(BaseResource):
+    @swag_from('../docs/celebrity.yml')
     def get(self, cid):
         headers = {'content-type': 'application/json'}
         self.logger.info('the parameter is given: %s', cid)

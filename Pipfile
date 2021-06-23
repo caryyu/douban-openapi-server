@@ -14,6 +14,7 @@ flask-caching = "*"
 requests = "*"
 beautifulsoup4 = "*"
 flask-restful = "*"
+flasgger = "*"
 
 [dev-packages]
 autopep8 = "*"

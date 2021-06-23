@@ -1,8 +1,10 @@
 from resource.base_resource import BaseResource
 from flask_restful import Resource, reqparse
+from flasgger import swag_from
 
 class MovieList(BaseResource):
 
+    @swag_from('../docs/movie-list.yml')
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('type', type=str)
@@ -40,6 +42,7 @@ class MovieList(BaseResource):
         return f'Results Not Found: {keyword}', 404, headers
 
 class Movie(BaseResource):
+    @swag_from('../docs/movie.yml')
     def get(self, sid):
         return self.__api_fetch_by_sid(sid)
 
@@ -56,6 +59,7 @@ class Movie(BaseResource):
         return f'Results Not Found: {sid}', 404, headers
 
 class MovieCelebrityList(BaseResource):
+    @swag_from('../docs/movie-celebrity-list.yml')
     def get(self, sid):
         return self.__api_fetch_celerities_by_sid(sid)
 

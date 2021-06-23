@@ -1,0 +1,69 @@
+swagger: "2.0"
+info:
+  title: "Douban Open API"
+  description: "An unofficial API server for Douban"
+  contact:
+    responsibleOrganization: "individual"
+    responsibleDeveloper: "caryyu"
+    email: "caryyu.tg@gmail.com"
+    url: "github.com/caryyu"
+  termsOfService: "http://swagger.io/terms/"
+  version: "0.0.1"
+  license:
+    name: "MIT"
+    url: "https://github.com/caryyu/douban-openapi-server/blob/main/LICENSE"
+host: "localhost:5000"
+basePath: "/"
+schemes:
+  - "http"
+definitions:
+  Celebrity:
+    type: object
+    properties:
+      id:
+        type: string
+      img:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+  Movie:
+    type: object
+    properties:
+      name:
+        type: string
+      rating:
+        type: string
+      img:
+        type: string
+      sid:
+        type: string
+      year:
+        type: string
+      intro:
+        type: string
+      director:
+        type: string
+      actor:
+        type: string
+      genre:
+        type: string
+      site:
+        type: string
+      country:
+        type: string
+      language:
+        type: string
+      screen:
+        type: string
+      duration:
+        type: string
+      subname:
+        type: string
+      imdb:
+        type: string
+      celebrities:
+        type: array
+        items:
+          $ref: '#/definitions/Celebrity'
