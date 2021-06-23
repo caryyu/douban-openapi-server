@@ -1,19 +1,21 @@
 swagger: "2.0"
 info:
   title: "Douban Open API"
-  description: "An unofficial API server"
+  description: "An unofficial API server for Douban"
   contact:
     responsibleOrganization: "individual"
     responsibleDeveloper: "caryyu"
     email: "caryyu.tg@gmail.com"
     url: "github.com/caryyu"
-  termsOfService: "http://me.com/terms"
+  termsOfService: "http://swagger.io/terms/"
   version: "0.0.1"
+  license:
+    name: "MIT"
+    url: "https://github.com/caryyu/douban-openapi-server/blob/main/LICENSE"
 host: "localhost:5000"
 basePath: "/"
 schemes:
   - "http"
-  - "https"
 definitions:
   Celebrity:
     type: object

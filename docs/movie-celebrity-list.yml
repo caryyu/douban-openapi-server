@@ -1,7 +1,7 @@
 Query a movie celebrity list by a movie id
 ---
 tags:
-  - Movie
+  - Celebrity
 parameters:
   - name: sid
     in: path

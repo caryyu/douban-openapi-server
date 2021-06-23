@@ -1,0 +1,14 @@
+Query a celebrity by its id
+---
+tags:
+  - Celebrity
+parameters:
+  - name: cid
+    in: path
+    type: string
+    required: true
+responses:
+  200:
+    description: A Celebrity object
+    schema:
+      $ref: '#/definitions/Celebrity'
