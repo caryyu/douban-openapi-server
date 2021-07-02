@@ -110,6 +110,7 @@ class HttpRequestProvider(object):
                 "role": role
             }
 
+        celebrities = filter(lambda x: 'fake' not in x['class'], celebrities)
         celebrities = map(func_element_wrap, celebrities)
         celebrities = filter(lambda x: x["role"] in ["导演","配音","演员"], list(celebrities))
         result["celebrities"] = list(celebrities)

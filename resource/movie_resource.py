@@ -1,3 +1,4 @@
+import traceback
 from resource.base_resource import BaseResource
 from flask_restful import Resource, reqparse
 from flasgger import swag_from
@@ -22,8 +23,8 @@ class MovieList(BaseResource):
         result = ""
         try:
             result = self.provider.search_full_list(str(keyword))
-        except Exception as ex:
-            print(ex)
+        except:
+            traceback.print_exc()
         if result:
             return result, 200, headers
         return f'Results Not Found: {keyword}', 404, headers
@@ -35,8 +36,8 @@ class MovieList(BaseResource):
         result = ""
         try:
             result = self.provider.search_partial_list(str(keyword))
-        except Exception as ex:
-            print(ex)
+        except:
+            traceback.print_exc()
         if result:
             return result, 200, headers
         return f'Results Not Found: {keyword}', 404, headers
@@ -52,8 +53,8 @@ class Movie(BaseResource):
         result = ""
         try:
             result = self.provider.fetch_detail_info(str(sid))
-        except Exception as ex:
-            print(ex)
+        except:
+            traceback.print_exc()
         if result:
             return result, 200, headers
         return f'Results Not Found: {sid}', 404, headers
@@ -69,8 +70,8 @@ class MovieCelebrityList(BaseResource):
         result = ""
         try:
             result = self.provider.fetch_celebrities(str(sid))
-        except Exception as ex:
-            print(ex)
+        except:
+            traceback.print_exc()
         if result:
             return result, 200, headers
         return f'Results Not Found: {sid}', 404, headers
