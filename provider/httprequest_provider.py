@@ -155,7 +155,7 @@ class HttpRequestProvider(object):
         soup = BeautifulSoup(r.text, "html.parser")
         info_text = soup.select_one("#headline div.info ul").get_text()
         name = soup.select_one("#content > h1").string
-        img = soup.select_one("#headline > div.pic > a > img")["src"]
+        img = soup.select_one("#headline > div.pic img")["src"]
         intro = "".join(soup.select_one("#intro div.bd").stripped_strings)
 
         lines = info_text.split("\n\n")

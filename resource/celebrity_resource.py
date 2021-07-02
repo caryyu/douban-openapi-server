@@ -1,3 +1,4 @@
+import traceback
 from resource.base_resource import BaseResource
 from flasgger import swag_from
 
@@ -9,8 +10,8 @@ class Celebrity(BaseResource):
         result = ""
         try:
             result = self.provider.fetch_celebrity_detail(str(cid))
-        except Exception as ex:
-            print(ex)
+        except:
+            traceback.print_exc()
         if result:
             return result, 200, headers
         return f'Results Not Found: {cid}', 404, headers
