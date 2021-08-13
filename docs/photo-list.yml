@@ -1,0 +1,16 @@
+Query a photo list by a movie id
+---
+tags:
+  - Photo
+parameters:
+  - name: sid
+    in: path
+    type: string
+    required: true
+responses:
+  200:
+    description: A list of photo
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/Photo'

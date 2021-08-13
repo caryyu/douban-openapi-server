@@ -3,6 +3,7 @@ import json
 from flasgger import Swagger
 from resource.celebrity_resource import Celebrity
 from resource.movie_resource import Movie, MovieCelebrityList, MovieList
+from resource.general_resource import PhotoList
 
 from flask import Flask
 from flask import request
@@ -26,6 +27,7 @@ api.add_resource(MovieList, '/movies', resource_class_kwargs=options)
 api.add_resource(Movie, '/movies/<sid>', resource_class_kwargs=options)
 api.add_resource(MovieCelebrityList, '/movies/<sid>/celebrities', resource_class_kwargs=options)
 api.add_resource(Celebrity, '/celebrities/<cid>', resource_class_kwargs=options)
+api.add_resource(PhotoList, '/photo/<sid>', resource_class_kwargs=options)
 
 swagger_config = {
     "headers": [

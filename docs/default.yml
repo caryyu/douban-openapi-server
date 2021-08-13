@@ -17,6 +17,25 @@ basePath: "/"
 schemes:
   - "http"
 definitions:
+  Photo:
+    type: object
+    properties:
+      id:
+        type: string
+      small:
+        type: string
+      medium:
+        type: string
+      large:
+        type: string
+      name:
+        type: string
+      size:
+        type: string
+      width:
+        type: string
+      height:
+        type: string
   Celebrity:
     type: object
     properties:
