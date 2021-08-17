@@ -202,11 +202,10 @@ class HttpRequestProvider(object):
             small = f"https://img1.doubanio.com/view/photo/s/public/p{data_id}.jpg"
             medium = f"https://img1.doubanio.com/view/photo/m/public/p{data_id}.jpg"
             large = f"https://img1.doubanio.com/view/photo/l/public/p{data_id}.jpg"
-            name = item.select_one(".name").string.strip()
             size = item.select_one(".prop").string.strip()
             width = size[0:size.index("x")]
             height = size[size.index("x") + 1:len(size)]
-            result.append({"id": data_id, "small": small, "medium": medium, "large": large, "name": name, "size": size, "width": int(width), "height": int(height)})
+            result.append({"id": data_id, "small": small, "medium": medium, "large": large, "size": size, "width": int(width), "height": int(height)})
 
         return result
 
