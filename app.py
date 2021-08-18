@@ -9,11 +9,13 @@ from flask import Flask
 from flask import request
 from flask_caching import Cache
 from flask_restful import Api
+from flask_cors import CORS
 
 from provider.httprequest_provider import HttpRequestProvider
 
 provider = HttpRequestProvider()
 app = Flask(__name__)
+CORS(app)
 app.config.update(RESTFUL_JSON=dict(ensure_ascii=False))
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app, config={'CACHE_TYPE': 'simple'})

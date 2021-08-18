@@ -11,9 +11,8 @@ class PhotoList(BaseResource):
         result = ""
         try:
             result = self.provider.fetch_wallpaper(str(sid))
+            return result, 200, headers
         except:
             traceback.print_exc()
-        if result:
-            return result, 200, headers
         return f'Results Not Found: {sid}', 404, headers
 

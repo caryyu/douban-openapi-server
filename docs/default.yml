@@ -28,14 +28,12 @@ definitions:
         type: string
       large:
         type: string
-      name:
-        type: string
       size:
         type: string
       width:
-        type: string
+        type: integer
       height:
-        type: string
+        type: integer
   Celebrity:
     type: object
     properties:

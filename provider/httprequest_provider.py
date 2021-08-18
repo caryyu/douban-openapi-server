@@ -192,7 +192,9 @@ class HttpRequestProvider(object):
 
     def fetch_wallpaper(self, sid) -> list[dict]:
         r = requests.get(f"https://movie.douban.com/subject/{sid}/photos?type=W&start=0&sortby=size&size=a&subtype=a", headers=self.headers)
-        r.raise_for_status()
+        if r.status_code != 200:
+            return []
+
         soup = BeautifulSoup(r.text, "html.parser")
         items = soup.select(".poster-col3 li")
         
