@@ -15,6 +15,7 @@ requests = "*"
 beautifulsoup4 = "*"
 flask-restful = "*"
 flasgger = "*"
+flask-cors = "*"
 
 [dev-packages]
 autopep8 = "*"

@@ -3,16 +3,19 @@ import json
 from flasgger import Swagger
 from resource.celebrity_resource import Celebrity
 from resource.movie_resource import Movie, MovieCelebrityList, MovieList
+from resource.general_resource import PhotoList
 
 from flask import Flask
 from flask import request
 from flask_caching import Cache
 from flask_restful import Api
+from flask_cors import CORS
 
 from provider.httprequest_provider import HttpRequestProvider
 
 provider = HttpRequestProvider()
 app = Flask(__name__)
+CORS(app)
 app.config.update(RESTFUL_JSON=dict(ensure_ascii=False))
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app, config={'CACHE_TYPE': 'simple'})
@@ -26,6 +29,7 @@ api.add_resource(MovieList, '/movies', resource_class_kwargs=options)
 api.add_resource(Movie, '/movies/<sid>', resource_class_kwargs=options)
 api.add_resource(MovieCelebrityList, '/movies/<sid>/celebrities', resource_class_kwargs=options)
 api.add_resource(Celebrity, '/celebrities/<cid>', resource_class_kwargs=options)
+api.add_resource(PhotoList, '/photo/<sid>', resource_class_kwargs=options)
 
 swagger_config = {
     "headers": [

@@ -190,8 +190,31 @@ class HttpRequestProvider(object):
         category = element.select_one("div.content div h3 span")
         return "[电影]" == category.string.strip()
 
+    def fetch_wallpaper(self, sid) -> list[dict]:
+        r = requests.get(f"https://movie.douban.com/subject/{sid}/photos?type=W&start=0&sortby=size&size=a&subtype=a", headers=self.headers)
+        if r.status_code != 200:
+            return []
+
+        soup = BeautifulSoup(r.text, "html.parser")
+        items = soup.select(".poster-col3 li")
+        
+        result = []
+        for item in items:
+            data_id = item["data-id"]
+            small = f"https://img1.doubanio.com/view/photo/s/public/p{data_id}.jpg"
+            medium = f"https://img1.doubanio.com/view/photo/m/public/p{data_id}.jpg"
+            large = f"https://img1.doubanio.com/view/photo/l/public/p{data_id}.jpg"
+            size = item.select_one(".prop").string.strip()
+            width = size[0:size.index("x")]
+            height = size[size.index("x") + 1:len(size)]
+            result.append({"id": data_id, "small": small, "medium": medium, "large": large, "size": size, "width": int(width), "height": int(height)})
+
+        return result
+
 # if __name__ == "__main__":
     # p = HttpRequestProvider()
+    # r = p.fetch_wallpaper("1295038")
+    # print(r)
     # r = p.fetch_celebrity_detail("1032915")
     # print(r)
     # # # result = p.search_full_list("Harry Potter")
