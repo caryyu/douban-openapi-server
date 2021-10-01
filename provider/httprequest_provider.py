@@ -67,7 +67,9 @@ class HttpRequestProvider(object):
         info_text = soup.select_one(".subject #info").get_text()
         year = re.search("\\((\\d+)\\)", soup.select_one("#content h1 span.year").string).group(1)
         sid = re.search(".*/(\\d+)/.*", soup.select_one("#mainpic a")["href"]).group(1)
-        intro = "".join(soup.select_one("#link-report span:nth-child(1)").stripped_strings)
+
+        intro = soup.select_one("#link-report span:nth-child(1)")
+        intro = "".join(intro.stripped_strings) if intro else ""
 
         lines = info_text.split("\n")
         lines = map(lambda x: x.split(":", 1), lines)
