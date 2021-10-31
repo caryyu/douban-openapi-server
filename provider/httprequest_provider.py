@@ -61,12 +61,15 @@ class HttpRequestProvider(object):
         r = requests.get(f"https://movie.douban.com/subject/{sid}/", headers=self.headers)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
-        name = soup.select_one("#content h1 span:nth-child(1)").string
+        title = soup.select_one("#content h1 span:nth-child(1)").string
         rating = soup.select_one("#interest_sectl div.rating_wrap.clearbox div.rating_self.clearfix strong").string
         img = soup.select_one("#mainpic a img")["src"]
         info_text = soup.select_one(".subject #info").get_text()
         year = re.search("\\((\\d+)\\)", soup.select_one("#content h1 span.year").string).group(1)
         sid = re.search(".*/(\\d+)/.*", soup.select_one("#mainpic a")["href"]).group(1)
+        titles = re.search("(.+第\w季|[\w\uff1a\uff01\uff0c\u00b7]+)\s*(.*)", title)
+        name = titles.group(1)
+        originalName = titles.group(2)
 
         intro = soup.select_one("#link-report span:nth-child(1)")
         intro = "".join(intro.stripped_strings) if intro else ""
@@ -77,7 +80,7 @@ class HttpRequestProvider(object):
 
         fields = ("导演", "编剧", "主演", "类型", "官方网站", "制片国家/地区", "语言", "上映日期", "片长", "又名", "IMDb链接", "IMDb", "单集片长", "首播")
         fields_names = ("director", "writer", "actor", "genre", "site", "country", "language", "screen", "duration", "subname", "imdb", "imdb", "duration", "screen")
-        result:Dict[str, object] = {"name": name, "rating": rating, "img": img, "sid": sid, "year": year, "intro": intro}
+        result:Dict[str, object] = {"name": name, "originalName": originalName, "rating": rating, "img": img, "sid": sid, "year": year, "intro": intro}
 
         for item in iter(lines):
             field = item[0]
@@ -92,7 +95,7 @@ class HttpRequestProvider(object):
 
             if has:
                result[fields_names[i]] = item[1].strip() 
-            
+
         celebrities = soup.select("ul.celebrities-list li.celebrity")
 
         def func_element_wrap(element):
