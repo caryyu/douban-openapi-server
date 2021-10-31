@@ -216,16 +216,16 @@ class HttpRequestProvider(object):
 
         return result
 
-if __name__ == "__main__":
-    p = HttpRequestProvider()
+# if __name__ == "__main__":
+    # p = HttpRequestProvider()
     # r = p.fetch_wallpaper("1295038")
     # print(r)
     # r = p.fetch_celebrity_detail("1032915")
     # print(r)
     # # # result = p.search_full_list("Harry Potter")
     # # # result = trans.search_partial_list("Harry Potter")
-    result = p.fetch_detail_info("3016187")
+    # result = p.fetch_detail_info("3016187")
     # # result = p.fetch_celebrities("1295038")
     # result = json.dumps(result, ensure_ascii=False)
-    print(result)
+    # print(result)
 
