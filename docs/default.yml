@@ -50,6 +50,8 @@ definitions:
     properties:
       name:
         type: string
+      originalName:
+        type: string
       rating:
         type: string
       img:
