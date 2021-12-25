@@ -193,6 +193,8 @@ class HttpRequestProvider(object):
 
     def _filter_func_movie_only(self, element) -> bool:
         category = element.select_one("div.content div h3 span")
+        if category is None:
+            return False
         return "[电影]" == category.string.strip()
 
     def fetch_wallpaper(self, sid) -> list[dict]:
