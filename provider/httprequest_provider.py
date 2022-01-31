@@ -1,13 +1,33 @@
 import json
+import random
 import re
 from typing import Dict, List
 from bs4 import BeautifulSoup
 import requests
 
 class HttpRequestProvider(object):
-    headers = {
-        'User-Agent': 'curl/7.64.1',
-    }
+    cookie = {}
+
+    # 添加随机UA伪装
+    headers_arr = [
+        {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36'
+        },
+        {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0',
+        },
+        {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36 Edg/97.0.1072.76',
+        },
+        {
+            'User-Agent': 'Frodo/07220003 CFNetwork/1240.0.4 Darwin/20.6.0',
+        },
+        {
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/97.0.4692.84 Mobile/15E148 Safari/604.1',
+        }
+    ]
+    headers_index = random.randint(0, len(headers_arr) - 1)
+    headers = headers_arr[headers_index]
 
     def __init__(self, headers) -> None:
         self.headers = headers
@@ -242,15 +262,15 @@ class HttpRequestProvider(object):
         return image_dict[image_size]
 
 # if __name__ == "__main__":
-    # p = HttpRequestProvider()
-    # r = p.fetch_wallpaper("1295038")
-    # print(r)
-    # r = p.fetch_celebrity_detail("1032915")
-    # print(r)
-    # # # result = p.search_full_list("Harry Potter")
-    # # # result = trans.search_partial_list("Harry Potter")
-    # result = p.fetch_detail_info("3016187")
-    # # result = p.fetch_celebrities("1295038")
-    # result = json.dumps(result, ensure_ascii=False)
-    # print(result)
+#     p = HttpRequestProvider()
+#     r = p.fetch_wallpaper("1295038")
+#     print(r)
+#     r = p.fetch_celebrity_detail("1032915")
+#     print(r)
+#     # # result = p.search_full_list("Harry Potter")
+#     # # result = trans.search_partial_list("Harry Potter")
+#     result = p.fetch_detail_info("3016187")
+#     # result = p.fetch_celebrities("1295038")
+#     result = json.dumps(result, ensure_ascii=False)
+#     print(result)
 
