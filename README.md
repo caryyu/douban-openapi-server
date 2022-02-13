@@ -6,7 +6,7 @@ A Douban API server that provides an unofficial method for information gathering
 
 - SeleniumProvider - which will open a headless Chrome to simulate the user interaction (Optional)
 - HttpRequestProvider - which has leveraged `Requests & BeautifulSoup` for information gathering with no any browser interaction (By default)
-- P2PCacheProvider - `ToDo` (Scrapy/SQLite/IPFS/BitTorrent/Web3Storage/etc) - ???
+- P2PCacheProvider - `ToDo` (Scrapy/SQLite/IPFS/BitTorrent/Web3Storage/Resilio File Sync/etc) - ??????
 
 > Note: Any comments and issues are welcomed!
 
