@@ -11,7 +11,7 @@ class HttpRequestProvider(object):
     }
 
     def search_partial_list(self, keyword:str) -> List:
-        r = requests.get(f"https://www.douban.com/search?q={keyword}", headers=self.headers)
+        r = requests.get(f"https://www.douban.com/search?cat=1002&q={keyword}", headers=self.headers)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
         elements = soup.select("div.search-result div:nth-child(3) .result")
@@ -42,7 +42,7 @@ class HttpRequestProvider(object):
         return list(result)
 
     def search_full_list(self, keyword:str) -> List:
-        r = requests.get(f"https://www.douban.com/search?q={keyword}", headers=self.headers)
+        r = requests.get(f"https://www.douban.com/search?cat=1002&q={keyword}", headers=self.headers)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
         elements = soup.select("div.search-result div:nth-child(3) .result")
