@@ -13,4 +13,5 @@ WORKDIR /home/dos
 USER dos
 
 ADD --chown=dos:dos . /var/lib/app
-ENTRYPOINT ["gunicorn", "-w", "3", "-b", "0.0.0.0:5000", "--access-logfile", "-", "--chdir", "/var/lib/app", "app:app"]
+ENTRYPOINT ["gunicorn"]
+CMD ["-w", "3", "-b", "0.0.0.0:5000", "--access-logfile", "-", "--chdir", "/var/lib/app", "app:app"]
