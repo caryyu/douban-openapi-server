@@ -195,7 +195,8 @@ class HttpRequestProvider(object):
         category = element.select_one("div.content div h3 span")
         if category is None:
             return False
-        return "[电影]" == category.string.strip()
+        text = category.string.strip()
+        return "[电影]" == text or "[电视剧]" == text
 
     def fetch_wallpaper(self, sid) -> list[dict]:
         r = requests.get(f"https://movie.douban.com/subject/{sid}/photos?type=W&start=0&sortby=size&size=a&subtype=a", headers=self.headers)
