@@ -64,6 +64,10 @@ class HttpRequestProvider(object):
         title = soup.select_one("#content h1 span:nth-child(1)").string
         rating = soup.select_one("#interest_sectl div.rating_wrap.clearbox div.rating_self.clearfix strong").string
         img = soup.select_one("#mainpic a img")["src"]
+        regex = r"photo/[sl](_ratio_poster|pic)/public/"
+        img = re.sub(regex, "photo/raw/public/", img, 0, re.UNICODE)
+        img = img.replace(r"[^.]*$", "jpg")
+        print(img)
         info_text = soup.select_one(".subject #info").get_text()
         year = re.search("\\((\\d+)\\)", soup.select_one("#content h1 span.year").string).group(1)
         sid = re.search(".*/(\\d+)/.*", soup.select_one("#mainpic a")["href"]).group(1)
