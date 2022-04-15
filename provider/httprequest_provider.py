@@ -1,13 +1,15 @@
 import json
 import re
 from typing import Dict, List
-
+from provider.yaml_provider import YamlProvider
 from bs4 import BeautifulSoup
 import requests
 
+yamlProvider = YamlProvider
 class HttpRequestProvider(object):
     headers = {
         'User-Agent': 'curl/7.64.1',
+        'Cookie': yamlProvider.get_config("cookie")
     }
 
     def search_partial_list(self, keyword:str) -> List:
