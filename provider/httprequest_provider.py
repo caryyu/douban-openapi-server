@@ -1,20 +1,19 @@
+from email import header
+import os
 import json
 import re
 from typing import Dict, List
 from bs4 import BeautifulSoup
 import requests
-import os
 
 class HttpRequestProvider(object):
     headers = {
-        'User-Agent': 'curl/7.64.1'
+        'User-Agent': 'curl/7.64.1',
     }
 
-    env_headers = filter(lambda x: x.startswith("REQUEST_HEADERS_"), os.environ)
-    for key in env_headers:
-        value = os.environ.get(key).replace("_", "-")
-        headers[key.replace("REQUEST_HEADERS_","")] = value
-        
+    def __init__(self, headers) -> None:
+        self.headers = headers
+
     def search_partial_list(self, keyword:str) -> List:
         r = requests.get(f"https://www.douban.com/search?cat=1002&q={keyword}", headers=self.headers)
         r.raise_for_status()
