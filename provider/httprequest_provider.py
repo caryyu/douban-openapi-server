@@ -1,18 +1,20 @@
 import json
 import re
 from typing import Dict, List
-from provider.yaml_provider import YamlProvider
 from bs4 import BeautifulSoup
 import requests
+import os
 
-yamlProvider = YamlProvider
 class HttpRequestProvider(object):
-    cookie = yamlProvider().get_config("cookie")
     headers = {
-        'User-Agent': 'curl/7.64.1',
-        'Cookie': cookie
+        'User-Agent': 'curl/7.64.1'
     }
 
+    env_headers = filter(lambda x: x.startswith("REQUEST_HEADERS_"), os.environ)
+    for key in env_headers:
+        value = os.environ.get(key).replace("_", "-")
+        headers[key.replace("REQUEST_HEADERS_","")] = value
+        
     def search_partial_list(self, keyword:str) -> List:
         r = requests.get(f"https://www.douban.com/search?cat=1002&q={keyword}", headers=self.headers)
         r.raise_for_status()
