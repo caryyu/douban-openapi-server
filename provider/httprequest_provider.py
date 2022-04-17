@@ -1,7 +1,6 @@
 import json
 import re
 from typing import Dict, List
-
 from bs4 import BeautifulSoup
 import requests
 
@@ -9,6 +8,9 @@ class HttpRequestProvider(object):
     headers = {
         'User-Agent': 'curl/7.64.1',
     }
+
+    def __init__(self, headers) -> None:
+        self.headers = headers
 
     def search_partial_list(self, keyword:str) -> List:
         r = requests.get(f"https://www.douban.com/search?cat=1002&q={keyword}", headers=self.headers)

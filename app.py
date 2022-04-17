@@ -1,3 +1,4 @@
+import os
 import json
 
 from flasgger import Swagger
@@ -13,7 +14,12 @@ from flask_cors import CORS
 
 from provider.httprequest_provider import HttpRequestProvider
 
-provider = HttpRequestProvider()
+headers = {'User-Agent': 'curl/7.64.1'}
+for key in os.environ:
+    if key.startswith("REQUEST_HEADERS_"):
+        headers[key.replace("REQUEST_HEADERS_","").replace("_", "-")] = os.environ.get(key)
+    
+provider = HttpRequestProvider(headers)
 app = Flask(__name__)
 CORS(app)
 app.config.update(RESTFUL_JSON=dict(ensure_ascii=False))
