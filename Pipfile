@@ -16,7 +16,6 @@ beautifulsoup4 = "*"
 flask-restful = "*"
 flasgger = "*"
 flask-cors = "*"
-pyyaml = "*"
 
 [dev-packages]
 autopep8 = "*"
