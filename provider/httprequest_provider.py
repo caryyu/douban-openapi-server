@@ -7,9 +7,10 @@ import requests
 
 yamlProvider = YamlProvider
 class HttpRequestProvider(object):
+    cookie = yamlProvider().get_config("cookie")
     headers = {
         'User-Agent': 'curl/7.64.1',
-        'Cookie': yamlProvider.get_config("cookie")
+        'Cookie': cookie
     }
 
     def search_partial_list(self, keyword:str) -> List:
