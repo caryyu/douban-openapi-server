@@ -64,7 +64,7 @@ class HttpRequestProvider(object):
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
         title = soup.select_one("#content h1 span:nth-child(1)").string
-        rating = soup.select_one("#interest_sectl div.rating_wrap.clearbox div.rating_self.clearfix strong").string
+        rating = soup.select_one("#interest_sectl div.rating_wrap.clearbox div.rating_self.clearfix strong").string or '0'
         img = soup.select_one("#mainpic a img")["src"]
         info_text = soup.select_one(".subject #info").get_text()
         year = re.search("\\((\\d+)\\)", soup.select_one("#content h1 span.year").string).group(1)
