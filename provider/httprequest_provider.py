@@ -12,7 +12,7 @@ class HttpRequestProvider(object):
     def __init__(self, headers) -> None:
         self.headers = headers
 
-    def search_partial_list(self, keyword:str) -> List:
+    def search_partial_list(self, keyword:str, image_size: str = '') -> List:
         r = requests.get(f"https://www.douban.com/search?cat=1002&q={keyword}", headers=self.headers)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
@@ -35,7 +35,7 @@ class HttpRequestProvider(object):
                 "sid": sid,
                 "name": name.strip(),
                 "rating": rating.strip(),
-                "img": img.strip(),
+                "img": self._handle_poster_url(img.strip(), image_size),
                 "year": year
             }
 
@@ -43,7 +43,7 @@ class HttpRequestProvider(object):
         result = map(func_item_wrap, list(elements)[:limits])
         return list(result)
 
-    def search_full_list(self, keyword:str) -> List:
+    def search_full_list(self, keyword:str, image_size: str = '') -> List:
         r = requests.get(f"https://www.douban.com/search?cat=1002&q={keyword}", headers=self.headers)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
@@ -53,19 +53,19 @@ class HttpRequestProvider(object):
         def func_item_wrap(element) -> Dict:
             a = element.select_one("div.content div h3 a")
             sid = re.search(".*sid: (\\d+),.*", a["onclick"]).group(1)
-            return self.fetch_detail_info(sid)
+            return self.fetch_detail_info(sid, image_size)
 
         limits = 3
         result = map(func_item_wrap, list(elements)[:limits])
         return list(result)
 
-    def fetch_detail_info(self, sid:str) -> Dict:
+    def fetch_detail_info(self, sid:str, image_size: str = '') -> Dict:
         r = requests.get(f"https://movie.douban.com/subject/{sid}/", headers=self.headers)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
         title = soup.select_one("#content h1 span:nth-child(1)").string
         rating = soup.select_one("#interest_sectl div.rating_wrap.clearbox div.rating_self.clearfix strong").string or '0'
-        img = soup.select_one("#mainpic a img")["src"]
+        img = self._handle_poster_url(soup.select_one("#mainpic a img")["src"], image_size)
         info_text = soup.select_one(".subject #info").get_text()
         year = re.search("\\((\\d+)\\)", soup.select_one("#content h1 span.year").string).group(1)
         sid = re.search(".*/(\\d+)/.*", soup.select_one("#mainpic a")["href"]).group(1)
@@ -220,6 +220,16 @@ class HttpRequestProvider(object):
             result.append({"id": data_id, "small": small, "medium": medium, "large": large, "size": size, "width": int(width), "height": int(height)})
 
         return result
+
+    def _handle_poster_url(self, img, image_size: str = '') -> str:
+        # 替换图片域为没防盗链的img2
+        img = re.sub(r'//img\d+', '//img2', img)
+
+        # 修改图片大小
+        if image_size == 'm' or image_size == 'l':
+            return img.replace('s_ratio_poster', image_size)
+        else:
+            return img
 
 # if __name__ == "__main__":
     # p = HttpRequestProvider()
