@@ -20,11 +20,11 @@ class MovieList(BaseResource):
     def __api_full_search(self, params):
         headers = {'content-type': 'application/json'}
         keyword = params['q']
-        image_size = params['s']
+        options = {'image_size' : params['s']}
         self.logger.info('the parameter is given: %s', keyword)
         result = ""
         try:
-            result = self.provider.search_full_list(str(keyword), str(image_size))
+            result = self.provider.search_full_list(str(keyword), options)
         except:
             traceback.print_exc()
         if result:
@@ -34,11 +34,11 @@ class MovieList(BaseResource):
     def __api_partial_search(self, params):
         headers = {'content-type': 'application/json'}
         keyword = params["q"]
-        image_size = params['s']
+        options = {'image_size' : params['s']}
         self.logger.info('the parameter is given: %s', keyword)
         result = ""
         try:
-            result = self.provider.search_partial_list(str(keyword), str(image_size))
+            result = self.provider.search_partial_list(str(keyword), options)
         except:
             traceback.print_exc()
         if result:
@@ -55,11 +55,11 @@ class Movie(BaseResource):
 
     def __api_fetch_by_sid(self, sid, params):
         headers = {'content-type': 'application/json'}
-        image_size = params['s']
+        options = {'image_size' : params['s']}
         self.logger.info('the parameter is given: %s', sid)
         result = ""
         try:
-            result = self.provider.fetch_detail_info(str(sid), str(image_size))
+            result = self.provider.fetch_detail_info(str(sid), options)
         except:
             traceback.print_exc()
         if result:
