@@ -9,6 +9,7 @@ class MovieList(BaseResource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('type', type=str)
+        parser.add_argument('s', type=str)
         parser.add_argument('q', type=str, required=True)
         params = parser.parse_args()
         if params['type'] == 'full':
@@ -19,10 +20,11 @@ class MovieList(BaseResource):
     def __api_full_search(self, params):
         headers = {'content-type': 'application/json'}
         keyword = params['q']
+        options = {'image_size' : params['s']}
         self.logger.info('the parameter is given: %s', keyword)
         result = ""
         try:
-            result = self.provider.search_full_list(str(keyword))
+            result = self.provider.search_full_list(str(keyword), options)
         except:
             traceback.print_exc()
         if result:
@@ -32,10 +34,11 @@ class MovieList(BaseResource):
     def __api_partial_search(self, params):
         headers = {'content-type': 'application/json'}
         keyword = params["q"]
+        options = {'image_size' : params['s']}
         self.logger.info('the parameter is given: %s', keyword)
         result = ""
         try:
-            result = self.provider.search_partial_list(str(keyword))
+            result = self.provider.search_partial_list(str(keyword), options)
         except:
             traceback.print_exc()
         if result:
@@ -45,14 +48,18 @@ class MovieList(BaseResource):
 class Movie(BaseResource):
     @swag_from('../docs/movie.yml')
     def get(self, sid):
-        return self.__api_fetch_by_sid(sid)
+        parser = reqparse.RequestParser()
+        parser.add_argument('s', type=str)
+        params = parser.parse_args()
+        return self.__api_fetch_by_sid(sid, params)
 
-    def __api_fetch_by_sid(self, sid):
+    def __api_fetch_by_sid(self, sid, params):
         headers = {'content-type': 'application/json'}
+        options = {'image_size' : params['s']}
         self.logger.info('the parameter is given: %s', sid)
         result = ""
         try:
-            result = self.provider.fetch_detail_info(str(sid))
+            result = self.provider.fetch_detail_info(str(sid), options)
         except:
             traceback.print_exc()
         if result:

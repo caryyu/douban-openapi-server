@@ -7,6 +7,12 @@ parameters:
     in: path
     type: string
     required: true
+  - name: s
+    in: query
+    type: string
+    enum: ['s', 'm', 'l']
+    required: false
+    default: s
 responses:
   200:
     description: A movie object

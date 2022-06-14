@@ -12,7 +12,7 @@ class HttpRequestProvider(object):
     def __init__(self, headers) -> None:
         self.headers = headers
 
-    def search_partial_list(self, keyword:str) -> List:
+    def search_partial_list(self, keyword:str, options: dict) -> List:
         r = requests.get(f"https://www.douban.com/search?cat=1002&q={keyword}", headers=self.headers)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
@@ -26,6 +26,7 @@ class HttpRequestProvider(object):
             sid = re.search(".*sid: (\\d+),.*", a["onclick"]).group(1)
             year = re.search(".*/ (\\d+)$", element.select_one("div.content div div span.subject-cast").string).group(1)
             rating = "0"
+            img = self._get_img_by_size(img.strip(), options['image_size'])
             try:
                 element.select_one("div.content div div span.rating_nums").string
             except:
@@ -35,7 +36,7 @@ class HttpRequestProvider(object):
                 "sid": sid,
                 "name": name.strip(),
                 "rating": rating.strip(),
-                "img": img.strip(),
+                "img": img,
                 "year": year
             }
 
@@ -43,7 +44,7 @@ class HttpRequestProvider(object):
         result = map(func_item_wrap, list(elements)[:limits])
         return list(result)
 
-    def search_full_list(self, keyword:str) -> List:
+    def search_full_list(self, keyword:str, options: dict) -> List:
         r = requests.get(f"https://www.douban.com/search?cat=1002&q={keyword}", headers=self.headers)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
@@ -53,13 +54,13 @@ class HttpRequestProvider(object):
         def func_item_wrap(element) -> Dict:
             a = element.select_one("div.content div h3 a")
             sid = re.search(".*sid: (\\d+),.*", a["onclick"]).group(1)
-            return self.fetch_detail_info(sid)
+            return self.fetch_detail_info(sid, options)
 
         limits = 3
         result = map(func_item_wrap, list(elements)[:limits])
         return list(result)
 
-    def fetch_detail_info(self, sid:str) -> Dict:
+    def fetch_detail_info(self, sid:str, options: dict) -> Dict:
         r = requests.get(f"https://movie.douban.com/subject/{sid}/", headers=self.headers)
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
@@ -72,6 +73,7 @@ class HttpRequestProvider(object):
         titles = re.search("(.+第\w季|[\w\uff1a\uff01\uff0c\u00b7]+)\s*(.*)", title)
         name = titles.group(1)
         originalName = titles.group(2)
+        img = self._get_img_by_size(img, options['image_size'])
 
         intro = soup.select_one("#link-report span:nth-child(1)")
         intro = "".join(intro.stripped_strings) if intro else ""
@@ -220,6 +222,22 @@ class HttpRequestProvider(object):
             result.append({"id": data_id, "small": small, "medium": medium, "large": large, "size": size, "width": int(width), "height": int(height)})
 
         return result
+
+    def _get_img_by_size(self, img, image_size: str = '') -> str:
+        if image_size != 'm' and image_size != 'l':
+            image_size = 's'
+
+        # 从url解析图片id
+        match = re.search(r"/p(\d+?)\.", img)
+        data_id = match.group(1)
+
+        image_dict = {
+            's': f"https://img2.doubanio.com/view/photo/s/public/p{data_id}.jpg",
+            'm': f"https://img2.doubanio.com/view/photo/m/public/p{data_id}.jpg",
+            'l': f"https://img2.doubanio.com/view/photo/l/public/p{data_id}.jpg"
+        }
+        
+        return image_dict[image_size]
 
 # if __name__ == "__main__":
     # p = HttpRequestProvider()
