@@ -17,7 +17,7 @@ parameters:
   - name: s
     in: query
     type: string
-    enum: ["s", "m", "l"]
+    enum: ['s', 'm', 'l']
     required: false
     default: s
 responses:
