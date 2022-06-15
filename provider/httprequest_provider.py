@@ -230,7 +230,7 @@ class HttpRequestProvider(object):
         # 从url解析图片id，空白默认图没id，不处理
         match = re.search(r"/p(\d+?)\.", img)
         if not match:
-        	return img
+            return img
         data_id = match.group(1)
 
         image_dict = {
