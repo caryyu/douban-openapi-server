@@ -227,8 +227,10 @@ class HttpRequestProvider(object):
         if image_size != 'm' and image_size != 'l':
             image_size = 's'
 
-        # 从url解析图片id
+        # 解析 URL 获取图片 ID (无 ID 直接返回默认图片)
         match = re.search(r"/p(\d+?)\.", img)
+        if not match:
+            return img
         data_id = match.group(1)
 
         image_dict = {
