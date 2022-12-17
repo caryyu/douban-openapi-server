@@ -75,7 +75,7 @@ class HttpRequestProvider(object):
         originalName = titles.group(2)
         img = self._get_img_by_size(img, options['image_size'])
 
-        intro = soup.select_one("#link-report span:nth-child(1)")
+        intro = soup.select_one("#link-report-intra span:nth-child(1)")
         intro = "".join(intro.stripped_strings) if intro else ""
 
         lines = info_text.split("\n")
